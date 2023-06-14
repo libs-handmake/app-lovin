@@ -1,7 +1,6 @@
 package applovin.hoangdv.libs.ads.interstitial
 
 import android.app.Activity
-import android.util.Log
 import applovin.hoangdv.libs.MaxAds
 import applovin.hoangdv.libs.data.shared.AdsShared
 import applovin.hoangdv.libs.listeners.FullScreenAdsListener
@@ -53,6 +52,7 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
     }
 
     override fun onAdPassed() {
+        lastTimeLoadAds = System.currentTimeMillis()
         onAdPassed?.invoke()
         loadAds()
         showing = false
