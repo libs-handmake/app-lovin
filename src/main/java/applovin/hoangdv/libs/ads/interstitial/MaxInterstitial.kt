@@ -37,28 +37,28 @@ class MaxInterstitial(
         interAd.showAd()
     }
 
-    override fun onAdLoaded(p0: MaxAd?) {
+    override fun onAdLoaded(p0: MaxAd) {
         loading = false
         adListener.onAdLoaded()
     }
 
-    override fun onAdDisplayed(p0: MaxAd?) {
+    override fun onAdDisplayed(p0: MaxAd) {
         adListener.onAdShowed()
     }
 
-    override fun onAdHidden(p0: MaxAd?) {
+    override fun onAdHidden(p0: MaxAd) {
         adListener.onAdPassed()
     }
 
-    override fun onAdClicked(p0: MaxAd?) {
+    override fun onAdClicked(p0: MaxAd) {
     }
 
-    override fun onAdLoadFailed(p0: String?, p1: MaxError?) {
+    override fun onAdLoadFailed(p0: String, p1: MaxError) {
         loading = false
         adListener.onAdFailedToLoad()
     }
 
-    override fun onAdDisplayFailed(p0: MaxAd?, p1: MaxError?) {
+    override fun onAdDisplayFailed(p0: MaxAd, p1: MaxError) {
         adListener.onAdFailedToShow()
     }
 }

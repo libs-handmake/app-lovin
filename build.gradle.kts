@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":base:android-common"))
     implementation(Deps.KTX_CORE)
     implementation(Deps.APPCOMPAT)
     implementation(Deps.MATERIAL)
@@ -59,7 +60,7 @@ dependencies {
     implementation(Deps.FIREBASE_REMOTE_CONFIG)
 
     implementation(Deps.RECYCLER_VIEW)
-    implementation(AppLovinDeps.ADMOB_ADAPTER)
-    implementation(AppLovinDeps.IRON_SOURCE_ADAPTER)
-    implementation(AppLovinDeps.MINTEGRAL_ADAPTER)
+//    implementation(AppLovinDeps.ADMOB_ADAPTER)
+//    implementation(AppLovinDeps.IRON_SOURCE_ADAPTER)
+//    implementation(AppLovinDeps.MINTEGRAL_ADAPTER)
 }

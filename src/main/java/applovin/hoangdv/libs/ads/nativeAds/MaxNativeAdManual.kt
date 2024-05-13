@@ -78,19 +78,19 @@ internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdList
     }
 
 
-    override fun onNativeAdLoaded(p0: MaxNativeAdView?, p1: MaxAd?) {
+    override fun onNativeAdLoaded(p0: MaxNativeAdView?, p1: MaxAd) {
 //        adLoader?.destroy(p1)
         updateState(LoaderState.LOADED)
     }
 
-    override fun onNativeAdLoadFailed(p0: String?, p1: MaxError?) {
+    override fun onNativeAdLoadFailed(p0: String, p1: MaxError) {
         updateState(LoaderState.ERROR)
     }
 
-    override fun onNativeAdClicked(p0: MaxAd?) {
+    override fun onNativeAdClicked(p0: MaxAd) {
     }
 
-    override fun onNativeAdExpired(p0: MaxAd?) {
+    override fun onNativeAdExpired(p0: MaxAd) {
         updateState(LoaderState.ERROR)
     }
 
@@ -130,7 +130,7 @@ internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdList
         adLoader?.setRevenueListener(this)
     }
 
-    override fun onAdRevenuePaid(p0: MaxAd?) {
+    override fun onAdRevenuePaid(p0: MaxAd) {
 
     }
 
