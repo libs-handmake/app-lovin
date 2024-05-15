@@ -5,6 +5,7 @@ import applovin.hoangdv.libs.MaxAds
 import applovin.hoangdv.libs.data.shared.AdsShared
 import applovin.hoangdv.libs.listeners.FullScreenAdsListener
 import applovin.hoangdv.libs.water_flow.WaterFlow
+import common.hoangdz.lib.utils.ads.GlobalAdState
 
 class MaxInterstitialManager(private val activity: Activity, private val adsShared: AdsShared) :
     FullScreenAdsListener() {
@@ -14,7 +15,7 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
         var showing = false
     }
 
-    private var onAdPassed: (() -> Unit)? = null
+    private var onAdPassed: ((Boolean) -> Unit)? = null
 
     private var interAd: MaxInterstitial? = null
 
@@ -22,38 +23,34 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
         MaxAds.adUnitId?.let {
             WaterFlow(
                 ids = mutableListOf(
-                    it.highFloorInterID,
-                    it.mediumFloorInterId,
-                    it.allPriceInterAd
-                ),
-                normalID = it.normalInterAd,
-                adsShared = adsShared
+                    it.highFloorInterID, it.mediumFloorInterId, it.allPriceInterAd
+                ), normalID = it.normalInterAd, adsShared = adsShared
             )
         }
     }
 
-    private val isValidAds get() = System.currentTimeMillis() - lastTimeLoadAds > adsShared.interstitialGap
+    private val isValidAds get() = System.currentTimeMillis() - lastTimeLoadAds > adsShared.interstitialGap && MaxAds.readyToLoadAds
 
-    val ready get() = interAd?.isReady == true && adsShared.availableForShowFullscreenADS
+    val ready get() = interAd?.isReady == true && adsShared.availableForShowFullscreenADS && !GlobalAdState.showingFullScreenADS
 
 
-    fun show(onAdPassed: (() -> Unit)) {
+    fun show(onAdPassed: ((Boolean) -> Unit)) {
         this.onAdPassed = onAdPassed
         if (waterFlow?.canShowAds != true || !isValidAds) {
-            onAdPassed.invoke()
+            onAdPassed.invoke(false)
             return
         }
         if (ready) {
             interAd?.show()
         } else {
-            onAdPassed.invoke()
+            onAdPassed.invoke(false)
             loadAds()
         }
     }
 
-    override fun onAdPassed() {
+    override fun onAdPassed(hasShow: Boolean) {
         lastTimeLoadAds = System.currentTimeMillis()
-        onAdPassed?.invoke()
+        onAdPassed?.invoke(hasShow)
         loadAds()
         showing = false
     }

@@ -1,6 +1,7 @@
 package applovin.hoangdv.libs.data.shared
 
 import android.content.Context
+import applovin.hoangdv.libs.BuildConfig
 import applovin.hoangdv.libs.ads.app_open.MaxAppOpen
 import applovin.hoangdv.libs.ads.interstitial.MaxInterstitialManager
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -27,8 +28,7 @@ class AdsShared_Impl(private val context: Context) : AdsShared {
 
     private val shared by lazy {
         context.getSharedPreferences(
-            "applovin.hoangdv.libs.max_ads_configs",
-            Context.MODE_PRIVATE
+            "applovin.hoangdv.libs.max_ads_configs", Context.MODE_PRIVATE
         )
     }
 
@@ -46,7 +46,7 @@ class AdsShared_Impl(private val context: Context) : AdsShared {
         )
 
     override var interstitialGap: Long
-        get() = shared.getLong(INTER_GAP, 30_000)
+        get() = if (BuildConfig.DEBUG) shared.getLong(INTER_GAP, 30_000) else 0L
         set(value) {
             edit.putLong(INTER_GAP, value).apply()
         }

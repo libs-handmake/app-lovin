@@ -6,6 +6,7 @@ import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxAdListener
 import com.applovin.mediation.MaxError
 import com.applovin.mediation.ads.MaxInterstitialAd
+import common.hoangdz.lib.utils.ads.GlobalAdState
 
 class MaxInterstitial(
     private val activity: Activity,
@@ -44,10 +45,12 @@ class MaxInterstitial(
 
     override fun onAdDisplayed(p0: MaxAd) {
         adListener.onAdShowed()
+        GlobalAdState.showingFullScreenADS = true
     }
 
     override fun onAdHidden(p0: MaxAd) {
-        adListener.onAdPassed()
+        adListener.onAdPassed(true)
+        GlobalAdState.showingFullScreenADS = false
     }
 
     override fun onAdClicked(p0: MaxAd) {

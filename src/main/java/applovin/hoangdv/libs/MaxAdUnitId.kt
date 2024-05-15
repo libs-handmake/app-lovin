@@ -1,6 +1,8 @@
 package applovin.hoangdv.libs
 
 interface MaxAdUnitId {
+    val apiKey:String
+
     val normalInterAd: String
 
     val highFloorInterID: String

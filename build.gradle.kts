@@ -1,5 +1,11 @@
 @file:Suppress("UnstableApiUsage")
 
+import compose_config.composeImplementations
+import core_configs.coreAppImplementations
+import core_configs.jetpackComponentImplementation
+import firebase_configs.firebaseCoreImplementation
+
+
 plugins {
     id("kotlin-kapt")
     id(Plugins.ANDROID_LIBS)
@@ -21,8 +27,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -30,6 +35,12 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        compose = true
+        buildConfig = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = PluginsVer.COMPOSE_COMPILER
     }
     compileOptions {
         sourceCompatibility = Configs.JAVA_TARGET
@@ -42,25 +53,18 @@ android {
 
 dependencies {
     implementation(project(":base:android-common"))
-    implementation(Deps.KTX_CORE)
-    implementation(Deps.APPCOMPAT)
-    implementation(Deps.MATERIAL)
-    testImplementation(Deps.JUNIT_TEST)
-    androidTestImplementation(Deps.JUNIT_TEST_EXT)
-    androidTestImplementation(Deps.EPRESSO_CORE)
-
-    implementation(Deps.APP_LOVIN)
-    implementation(Deps.HILT)
-    kapt(Deps.HILT_COMPILER)
-    implementation(Deps.LIFECYCLE_PROCESS)
-    implementation(Deps.SDP)
-    implementation(Deps.SSP)
+    coreAppImplementations()
+    jetpackComponentImplementation()
+    composeImplementations()
+    firebaseCoreImplementation()
     implementation(Deps.SHIMMER_LAYOUT)
-    implementation(platform(Deps.FIREBASE_BOM))
-    implementation(Deps.FIREBASE_REMOTE_CONFIG)
+    implementation(Deps.APP_LOVIN)
 
-    implementation(Deps.RECYCLER_VIEW)
 //    implementation(AppLovinDeps.ADMOB_ADAPTER)
 //    implementation(AppLovinDeps.IRON_SOURCE_ADAPTER)
 //    implementation(AppLovinDeps.MINTEGRAL_ADAPTER)
+}
+
+kapt {
+    correctErrorTypes = true
 }

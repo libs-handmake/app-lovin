@@ -11,6 +11,7 @@ import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxAdListener
 import com.applovin.mediation.MaxError
 import com.applovin.mediation.ads.MaxAppOpenAd
+import common.hoangdz.lib.utils.ads.GlobalAdState
 
 class MaxAppOpen(private val context: Context, private val adsShared: AdsShared) :
     LifecycleEventObserver, MaxAdListener {
@@ -24,8 +25,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: AdsShared)
 
     private val openAd by lazy {
         MaxAppOpenAd(
-            MaxAds.adUnitId?.appOpen ?: return@lazy null,
-            context
+            MaxAds.adUnitId?.appOpen ?: return@lazy null, context
         )
     }
 
@@ -33,7 +33,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: AdsShared)
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
-    private val readyForShow get() = System.currentTimeMillis() - lastTimeShowAds > adsShared.appOpenGap && adsShared.availableForShowFullscreenADS
+    private val readyForShow get() = System.currentTimeMillis() - lastTimeShowAds > adsShared.appOpenGap && adsShared.availableForShowFullscreenADS && !GlobalAdState.showingFullScreenADS
 
     private fun loadAd() {
         if (loading || openAd?.isReady == true) return
@@ -48,8 +48,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: AdsShared)
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         if (event == Lifecycle.Event.ON_RESUME) {
-            if (openAd?.isReady == true)
-                showAds()
+            if (openAd?.isReady == true) showAds()
         }
     }
 
@@ -66,11 +65,13 @@ class MaxAppOpen(private val context: Context, private val adsShared: AdsShared)
 
     override fun onAdDisplayed(p0: MaxAd) {
         isAdShowing = true
+        GlobalAdState.showingFullScreenADS = true
         lastTimeShowAds = System.currentTimeMillis()
     }
 
     override fun onAdHidden(p0: MaxAd) {
         isAdShowing = false
+        GlobalAdState.showingFullScreenADS = false
         lastTimeShowAds = System.currentTimeMillis()
         loadAd()
     }
