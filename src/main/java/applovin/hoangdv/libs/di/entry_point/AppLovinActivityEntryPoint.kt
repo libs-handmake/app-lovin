@@ -7,6 +7,6 @@ import dagger.hilt.android.components.ActivityComponent
 
 @EntryPoint
 @InstallIn(ActivityComponent::class)
-interface ActivityEntryPoint {
+interface AppLovinActivityEntryPoint {
     fun maxInterstitialManager(): MaxInterstitialManager
 }

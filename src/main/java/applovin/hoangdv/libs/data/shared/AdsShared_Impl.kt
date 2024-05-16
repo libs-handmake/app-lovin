@@ -1,9 +1,9 @@
 package applovin.hoangdv.libs.data.shared
 
 import android.content.Context
-import applovin.hoangdv.libs.BuildConfig
 import applovin.hoangdv.libs.ads.app_open.MaxAppOpen
 import applovin.hoangdv.libs.ads.interstitial.MaxInterstitialManager
+import applovin.hoangdv.libs.utils.MaxAdState
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlin.math.max
 
@@ -46,7 +46,9 @@ class AdsShared_Impl(private val context: Context) : AdsShared {
         )
 
     override var interstitialGap: Long
-        get() = if (BuildConfig.DEBUG) shared.getLong(INTER_GAP, 30_000) else 0L
+        get() {
+            return MaxAdState.overrideInterGap ?: shared.getLong(INTER_GAP, 30_000)
+        }
         set(value) {
             edit.putLong(INTER_GAP, value).apply()
         }

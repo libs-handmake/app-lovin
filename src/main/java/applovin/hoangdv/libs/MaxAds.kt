@@ -21,19 +21,16 @@ class MaxAds(private val context: Context, private val adsRemoteConfigs: AdsRemo
         adsRemoteConfigs.fetchAdsConfig()
         val initConfig = AppLovinSdkInitializationConfiguration.builder(
             adUnitId.apiKey, context
-        ).setMediationProvider(AppLovinMediationProvider.MAX).configureSettings {
-            it.setVerboseLogging(true)
-            it.testDeviceAdvertisingIds = mutableListOf(
-                "266c7c33-7c5f-48bd-a671-37781a593b19", "2f7f600f-731c-4bac-a6d5-e8b29fa3b5dd"
-            )
-        }.build()
+        ).setMediationProvider(AppLovinMediationProvider.MAX).setTestDeviceAdvertisingIds(
+                mutableListOf(
+                    "266c7c33-7c5f-48bd-a671-37781a593b19", "2f7f600f-731c-4bac-a6d5-e8b29fa3b5dd"
+                )
+            ).build()
 
-        logError("MAX ADS start inititial")
         AppLovinSdk.getInstance(context).apply {
             initialize(initConfig) { sdkConfig ->
                 // Start loading ads
                 onInitial?.invoke(sdkConfig)
-                logError("MAX ADS initialized")
                 readyToLoadAds = true
             }
         }
