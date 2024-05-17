@@ -2,7 +2,7 @@ package applovin.hoangdv.libs.data.shared
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
-interface AdsShared {
+interface MaxAdsLibShared {
 
     val firebaseDefaultRemoteConfig: Map<String, Any>
 

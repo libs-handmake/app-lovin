@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import applovin.hoangdv.libs.data.shared.AdsShared
+import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 
-class MaxNativeManager(private val context: Context, private val adsShared: AdsShared) {
+class MaxNativeManager(private val context: Context, private val adsShared: MaxAdsLibShared) {
 
 //    private val adHolders by lazy { mutableListOf<MaxNativeAdHolder>() }
 

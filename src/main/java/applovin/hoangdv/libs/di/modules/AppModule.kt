@@ -5,7 +5,7 @@ import applovin.hoangdv.libs.MaxAds
 import applovin.hoangdv.libs.ads.app_open.MaxAppOpen
 import applovin.hoangdv.libs.ads.nativeAds.MaxNativeManager
 import applovin.hoangdv.libs.data.remote.AdsRemoteConfigs
-import applovin.hoangdv.libs.data.shared.AdsShared
+import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 import applovin.hoangdv.libs.data.shared.AdsShared_Impl
 import dagger.Module
 import dagger.Provides
@@ -20,7 +20,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAdShared(@ApplicationContext context: Context): AdsShared = AdsShared_Impl(context)
+    fun provideAdShared(@ApplicationContext context: Context): MaxAdsLibShared = AdsShared_Impl(context)
 
     @Singleton
     @Provides
@@ -29,16 +29,16 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAppOpen(@ApplicationContext context: Context, adsShared: AdsShared) =
+    fun provideAppOpen(@ApplicationContext context: Context, adsShared: MaxAdsLibShared) =
         MaxAppOpen(context, adsShared)
 
     @Singleton
     @Provides
-    fun provideMaxNativeManager(@ApplicationContext context: Context, adsShared: AdsShared) =
+    fun provideMaxNativeManager(@ApplicationContext context: Context, adsShared: MaxAdsLibShared) =
         MaxNativeManager(context, adsShared)
 
     @Singleton
     @Provides
-    fun provideAdsRemoteConfigs(adsShared: AdsShared) = AdsRemoteConfigs(adsShared)
+    fun provideAdsRemoteConfigs(adsShared: MaxAdsLibShared) = AdsRemoteConfigs(adsShared)
 
 }

@@ -1,7 +1,6 @@
 package applovin.hoangdv.libs.water_flow
 
-import android.util.Log
-import applovin.hoangdv.libs.data.shared.AdsShared
+import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 import kotlin.math.max
 import kotlin.math.min
 
@@ -9,7 +8,7 @@ import kotlin.math.min
 class WaterFlow(
     private val ids: MutableList<String>,
     private val normalID: String,
-    private val adsShared: AdsShared
+    private val adsShared: MaxAdsLibShared
 ) {
     companion object {
         var forceTurnOffWaterFlow = false

@@ -1,13 +1,13 @@
 package applovin.hoangdv.libs.data.remote
 
-import applovin.hoangdv.libs.data.shared.AdsShared
+import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AdsRemoteConfigs(private val adsShared: AdsShared) {
+class AdsRemoteConfigs(private val adsShared: MaxAdsLibShared) {
     fun fetchAdsConfig() {
         CoroutineScope(Dispatchers.IO).launch {
             val remoteConfig = FirebaseRemoteConfig.getInstance()
@@ -19,8 +19,7 @@ class AdsRemoteConfigs(private val adsShared: AdsShared) {
                 setDefaultsAsync(adsShared.firebaseDefaultRemoteConfig)
             }
             remoteConfig.fetchAndActivate().addOnCompleteListener {
-                if (it.isSuccessful)
-                    adsShared.applyFirebaseConfigs(remoteConfig)
+                if (it.isSuccessful) adsShared.applyFirebaseConfigs(remoteConfig)
             }
         }
 

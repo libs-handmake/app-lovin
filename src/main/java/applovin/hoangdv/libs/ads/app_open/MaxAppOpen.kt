@@ -6,14 +6,14 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import applovin.hoangdv.libs.MaxAds
-import applovin.hoangdv.libs.data.shared.AdsShared
+import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxAdListener
 import com.applovin.mediation.MaxError
 import com.applovin.mediation.ads.MaxAppOpenAd
 import common.hoangdz.lib.utils.ads.GlobalAdState
 
-class MaxAppOpen(private val context: Context, private val adsShared: AdsShared) :
+class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibShared) :
     LifecycleEventObserver, MaxAdListener {
 
     companion object {

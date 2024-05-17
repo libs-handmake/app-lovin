@@ -2,12 +2,12 @@ package applovin.hoangdv.libs.ads.interstitial
 
 import android.app.Activity
 import applovin.hoangdv.libs.MaxAds
-import applovin.hoangdv.libs.data.shared.AdsShared
+import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 import applovin.hoangdv.libs.listeners.FullScreenAdsListener
 import applovin.hoangdv.libs.water_flow.WaterFlow
 import common.hoangdz.lib.utils.ads.GlobalAdState
 
-class MaxInterstitialManager(private val activity: Activity, private val adsShared: AdsShared) :
+class MaxInterstitialManager(private val activity: Activity, private val adsShared: MaxAdsLibShared) :
     FullScreenAdsListener() {
 
     companion object {

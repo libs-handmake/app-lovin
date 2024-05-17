@@ -8,7 +8,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlin.math.max
 
 @Suppress("ClassName")
-class AdsShared_Impl(private val context: Context) : AdsShared {
+class AdsShared_Impl(private val context: Context) : MaxAdsLibShared {
 
     companion object {
         const val INTER_GAP = "applovin_inter_ads_gap"
@@ -36,8 +36,8 @@ class AdsShared_Impl(private val context: Context) : AdsShared {
 
     override val firebaseDefaultRemoteConfig: Map<String, Any>
         get() = mapOf(
-            INTER_GAP to interstitialGap,
-            APP_OPEN_GAP to APP_OPEN_GAP,
+            INTER_GAP to shared.getLong(INTER_GAP, 30_000),
+            APP_OPEN_GAP to appOpenGap,
             FULL_SCREEN_GAP to fullScreenAdsGap,
             MIN_WATER_FLOW_GAP to minWaterFlowGap,
             MAX_WATER_FLOW_GAP to maxWaterFlowGap,

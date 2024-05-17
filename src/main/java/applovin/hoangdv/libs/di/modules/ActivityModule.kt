@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import applovin.hoangdv.libs.ads.banner.MaxBannerLoader
 import applovin.hoangdv.libs.ads.interstitial.MaxInterstitialManager
-import applovin.hoangdv.libs.data.shared.AdsShared
+import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 import applovin.hoangdv.libs.di.qualifier.ActivityBannerAd
 import dagger.Module
 import dagger.Provides
@@ -20,7 +20,7 @@ class ActivityModule {
 
     @Provides
     @ActivityScoped
-    fun provideInterstitialAds(activity: Activity, adsShared: AdsShared) =
+    fun provideInterstitialAds(activity: Activity, adsShared: MaxAdsLibShared) =
         MaxInterstitialManager(activity, adsShared)
 
     @ActivityBannerAd
