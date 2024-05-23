@@ -2,6 +2,7 @@ package applovin.hoangdv.libs.ads.interstitial
 
 import android.app.Activity
 import applovin.hoangdv.libs.listeners.FullScreenAdsListener
+import applovin.hoangdv.libs.utils.MaxAdState
 import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxAdListener
 import com.applovin.mediation.MaxError
@@ -17,7 +18,11 @@ class MaxInterstitial(
     private val interAd by lazy {
         MaxInterstitialAd(
             adID, activity
-        )
+        ).apply {
+            setRevenueListener {
+                MaxAdState.onAdPaidEvent?.invoke(it)
+            }
+        }
     }
 
     init {
@@ -53,6 +58,7 @@ class MaxInterstitial(
         GlobalAdState.showingFullScreenADS = false
         MaxInterstitialManager.lastTimeLoadAds = System.currentTimeMillis()
     }
+
 
     override fun onAdClicked(p0: MaxAd) {
     }

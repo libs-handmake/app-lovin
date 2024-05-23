@@ -76,7 +76,9 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
         if (loading || interAd != null) return
         loading = true
         interAd =
-            MaxInterstitial(activity, waterFlow?.currentId ?: return, this).also { it.loadAd() }
+            MaxInterstitial(activity, waterFlow?.currentId ?: return, this).also {
+                it.loadAd()
+            }
     }
 
     override fun onAdLoaded() {
