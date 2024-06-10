@@ -58,7 +58,7 @@ class MaxBannerLoader(private val context: Context, private val owner: Lifecycle
     }
 
     override fun onAdLoadFailed(p0: String, p1: MaxError) {
-        owner.lifecycleScope.launchWhenResumed {
+        owner.launchWhen(Lifecycle.State.RESUMED) {
             binding?.root?.isVisible = false
             binding?.shimmerFrameLayout?.apply {
                 stopShimmer()

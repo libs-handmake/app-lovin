@@ -1,14 +1,12 @@
 package applovin.hoangdv.libs.ads.nativeAds
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import applovin.hoangdv.libs.MaxAds
 import applovin.hoangdv.libs.utils.LoaderState
 import com.applovin.mediation.MaxAd
@@ -18,6 +16,8 @@ import com.applovin.mediation.nativeAds.MaxNativeAdListener
 import com.applovin.mediation.nativeAds.MaxNativeAdLoader
 import com.applovin.mediation.nativeAds.MaxNativeAdView
 import com.applovin.mediation.nativeAds.MaxNativeAdViewBinder
+import common.hoangdz.lib.R
+import common.hoangdz.lib.extensions.launchWhen
 
 internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdListener(),
     LifecycleEventObserver, MaxAdRevenueListener {
@@ -26,8 +26,7 @@ internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdList
 
     private val adLoader by lazy {
         MaxNativeAdLoader(
-            MaxAds.adUnitId?.nativeId ?: return@lazy null,
-            context
+            MaxAds.adUnitId?.nativeId ?: return@lazy null, context
         )
     }
 
@@ -57,19 +56,15 @@ internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdList
         owner.lifecycle.addObserver(this)
         this.containerView = container
         val binder = template.run {
-            MaxNativeAdViewBinder.Builder(template)
-                .setTitleTextViewId(
-                    getIdentifier("ad_headline")
-                )
-                .setBodyTextViewId(getIdentifier("ad_body"))
-                .setCallToActionButtonId(getIdentifier("ad_call_to_action"))
-                .setIconImageViewId(getIdentifier("icon_view"))
-                .setMediaContentViewGroupId(getIdentifier("media_view"))
+            MaxNativeAdViewBinder.Builder(template).setTitleTextViewId(
+                R.id.head_line_view
+            ).setBodyTextViewId(R.id.content_view).setCallToActionButtonId(R.id.call_to_action_view)
+                .setIconImageViewId(R.id.icon_view).setMediaContentViewGroupId(R.id.media_view)
 //                .setAdvertiserTextViewId(getIdentifier("tv_ad"))
                 .build()
         }
-        contentLayout = template.findViewById(getIdentifier("layout_content"))
-        loadingLayout = template.findViewById(getIdentifier("shimmer_loading"))
+        contentLayout = template.findViewById(R.id.layout_ads)
+        loadingLayout = template.findViewById(R.id.layout_shimmer)
         container.removeAllViews()
         val maxAdView = MaxNativeAdView(binder, context)
         container.addView(maxAdView)
@@ -96,7 +91,7 @@ internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdList
 
     private fun updateState(state: LoaderState) {
         loaderState = state
-        owner?.lifecycleScope?.launchWhenResumed {
+        owner?.launchWhen(Lifecycle.State.RESUMED) {
             when (state) {
                 LoaderState.IDLE, LoaderState.LOADING -> {
                     contentLayout?.isVisible = false
@@ -114,14 +109,6 @@ internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdList
             }
         }
 
-    }
-
-    private fun getIdentifier(id: String): Int {
-        return context.resources.getIdentifier(
-            id,
-            "id",
-            context.packageName
-        )
     }
 
     private fun initListener() {
