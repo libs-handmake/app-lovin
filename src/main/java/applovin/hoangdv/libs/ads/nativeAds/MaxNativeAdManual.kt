@@ -38,16 +38,18 @@ internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdList
 
     private var loaderState = LoaderState.IDLE
 
+    private var maxAd: MaxAd? = null
+
     init {
         initListener()
     }
 
 
-    private fun startLoadAd(maxNativeAd: MaxNativeAdView) {
+    private fun startLoadAd() {
         if (loaderState == LoaderState.LOADED) return
         if (loaderState == LoaderState.LOADING) return
         updateState(LoaderState.LOADING)
-        adLoader?.loadAd(maxNativeAd)
+        adLoader?.loadAd()
     }
 
 
@@ -69,7 +71,7 @@ internal class MaxNativeAdManual(private val context: Context) : MaxNativeAdList
         val maxAdView = MaxNativeAdView(binder, context)
         container.addView(maxAdView)
         updateState(loaderState)
-        startLoadAd(maxAdView)
+        startLoadAd()
     }
 
 

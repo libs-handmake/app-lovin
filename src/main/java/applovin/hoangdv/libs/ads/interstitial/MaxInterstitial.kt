@@ -56,7 +56,7 @@ class MaxInterstitial(
     override fun onAdHidden(p0: MaxAd) {
         adListener.onAdPassed(true)
         GlobalAdState.showingFullScreenADS = false
-        MaxInterstitialManager.lastTimeLoadAds = System.currentTimeMillis()
+        MaxInterstitialManager.lastTimeShowAds = System.currentTimeMillis()
     }
 
 

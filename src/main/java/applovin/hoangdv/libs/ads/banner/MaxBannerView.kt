@@ -2,6 +2,7 @@ package applovin.hoangdv.libs.ads.banner
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -16,6 +17,11 @@ fun MaxBannerView() {
     val owner = LocalLifecycleOwner.current
     val maxBannerLoader = remember {
         MaxBannerLoader(context, owner)
+    }
+    DisposableEffect(key1 = Unit) {
+        onDispose {
+            maxBannerLoader.destroy()
+        }
     }
     AndroidView(factory = {
         val binding = TemplateBannerAdBinding.inflate(it.layoutInflater)

@@ -11,6 +11,7 @@ import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxAdListener
 import com.applovin.mediation.MaxError
 import com.applovin.mediation.ads.MaxAppOpenAd
+import common.hoangdz.lib.extensions.logError
 import common.hoangdz.lib.utils.ads.GlobalAdState
 
 class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibShared) :
@@ -36,6 +37,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
     private val readyForShow get() = System.currentTimeMillis() - lastTimeShowAds > adsShared.appOpenGap && adsShared.availableForShowFullscreenADS && !GlobalAdState.showingFullScreenADS
 
     private fun loadAd() {
+        logError("app open for max: load AD $loading ${openAd?.isReady}")
         if (loading || openAd?.isReady == true) return
         loading = true
         openAd?.loadAd()
@@ -48,7 +50,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         if (event == Lifecycle.Event.ON_RESUME) {
-            if (openAd?.isReady == true) showAds()
+            showAds()
         }
     }
 
@@ -60,6 +62,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
     }
 
     override fun onAdLoaded(p0: MaxAd) {
+        logError("app open for max: onAdLoaded")
         loading = false
     }
 
@@ -70,6 +73,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
     }
 
     override fun onAdHidden(p0: MaxAd) {
+        logError("app open for max: onAdHidden")
         isAdShowing = false
         GlobalAdState.showingFullScreenADS = false
         lastTimeShowAds = System.currentTimeMillis()
@@ -80,11 +84,13 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
     }
 
     override fun onAdLoadFailed(p0: String, p1: MaxError) {
+        logError("app open for max: onAdLoadFailed")
         loading = false
     }
 
     override fun onAdDisplayFailed(p0: MaxAd, p1: MaxError) {
         isAdShowing = false
+        GlobalAdState.showingFullScreenADS = false
         loadAd()
     }
 }

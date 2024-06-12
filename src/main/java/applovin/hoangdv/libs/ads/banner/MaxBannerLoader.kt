@@ -5,9 +5,9 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import applovin.hoangdv.libs.MaxAds
 import applovin.hoangdv.libs.databinding.TemplateBannerAdBinding
+import applovin.hoangdv.libs.utils.MaxAdState
 import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxAdViewAdListener
 import com.applovin.mediation.MaxError
@@ -33,6 +33,9 @@ class MaxBannerLoader(private val context: Context, private val owner: Lifecycle
             )
         )
         maxAdView?.setListener(this)
+        maxAdView?.setRevenueListener {
+            MaxAdState.onAdPaidEvent?.invoke(it)
+        }
         binding.frameContainer.addView(maxAdView)
         maxAdView?.loadAd()
     }
@@ -74,5 +77,9 @@ class MaxBannerLoader(private val context: Context, private val owner: Lifecycle
     }
 
     override fun onAdCollapsed(p0: MaxAd) {
+    }
+
+    fun destroy() {
+        maxAdView?.destroy()
     }
 }

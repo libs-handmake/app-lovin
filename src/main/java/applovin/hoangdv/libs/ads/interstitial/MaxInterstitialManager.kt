@@ -11,7 +11,7 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
     FullScreenAdsListener() {
 
     companion object {
-        var lastTimeLoadAds = 0L
+        var lastTimeShowAds = 0L
         var showing = false
     }
 
@@ -32,7 +32,7 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
     }
 
     private val isValidAds get() =
-        System.currentTimeMillis() - lastTimeLoadAds > adsShared.interstitialGap && MaxAds.readyToLoadAds
+        System.currentTimeMillis() - lastTimeShowAds > adsShared.interstitialGap && MaxAds.readyToLoadAds
 
     val ready get() = interAd?.isReady == true && adsShared.availableForShowFullscreenADS && !GlobalAdState.showingFullScreenADS
 
@@ -52,7 +52,7 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
     }
 
     override fun onAdPassed(hasShow: Boolean) {
-        lastTimeLoadAds = System.currentTimeMillis()
+        lastTimeShowAds = System.currentTimeMillis()
         onAdPassed?.invoke(hasShow)
         loadAds()
         showing = false
@@ -64,7 +64,7 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
         waterFlow?.failed {
             loadAds()
         }
-        lastTimeLoadAds = System.currentTimeMillis()
+        lastTimeShowAds = System.currentTimeMillis()
     }
 
     override fun onAdFailedToShow() {
@@ -88,7 +88,7 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
 
     override fun onAdShowed() {
         interAd = null
-        lastTimeLoadAds = System.currentTimeMillis()
+        lastTimeShowAds = System.currentTimeMillis()
         showing = true
     }
 

@@ -54,13 +54,13 @@ class AdsShared_Impl(private val context: Context) : MaxAdsLibShared {
         }
 
     override var appOpenGap: Long
-        get() = shared.getLong(APP_OPEN_GAP, 15_000L)
+        get() = 0L//shared.getLong(APP_OPEN_GAP, 15_000L)
         set(value) {
             edit.putLong(APP_OPEN_GAP, value).apply()
         }
 
     override var fullScreenAdsGap: Long
-        get() = shared.getLong(FULL_SCREEN_GAP, 5000)
+        get() = 0L//shared.getLong(FULL_SCREEN_GAP, 5000)
         set(value) {
             edit.putLong(FULL_SCREEN_GAP, value).apply()
         }
@@ -88,7 +88,7 @@ class AdsShared_Impl(private val context: Context) : MaxAdsLibShared {
             edit.putBoolean(IS_MONETIZATION, value).apply()
         }
     override val availableForShowFullscreenADS: Boolean
-        get() = System.currentTimeMillis() - MaxInterstitialManager.lastTimeLoadAds > fullScreenAdsGap && System.currentTimeMillis() - MaxAppOpen.lastTimeShowAds > fullScreenAdsGap && !MaxInterstitialManager.showing && !MaxAppOpen.isAdShowing
+        get() = System.currentTimeMillis() - MaxInterstitialManager.lastTimeShowAds > fullScreenAdsGap && System.currentTimeMillis() - MaxAppOpen.lastTimeShowAds > fullScreenAdsGap && !MaxInterstitialManager.showing && !MaxAppOpen.isAdShowing
 
     override fun applyFirebaseConfigs(firebaseRemoteConfig: FirebaseRemoteConfig) {
         interstitialGap = firebaseRemoteConfig.getLong(INTER_GAP)

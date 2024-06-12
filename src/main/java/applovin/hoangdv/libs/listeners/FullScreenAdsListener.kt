@@ -1,15 +1,17 @@
 package applovin.hoangdv.libs.listeners
 
 abstract class FullScreenAdsListener {
-     open fun onAdPassed(hasShow:Boolean){}
+    open fun onAdPassed(hasShow: Boolean) {}
 
-     open fun onAdFailedToLoad(){}
+    open fun onAdFailedToLoad() {}
 
-     open fun onAdReward(){}
+    open fun onAdReward() {}
 
-     open fun onAdShowed(){}
+    open fun onAdShowed() {}
 
-     open fun onAdFailedToShow(){}
+    open fun onAdFailedToShow() {}
 
-     open fun onAdLoaded(){}
+    open fun onAdLoaded() {}
+
+    open fun onAdHidden() {}
 }
