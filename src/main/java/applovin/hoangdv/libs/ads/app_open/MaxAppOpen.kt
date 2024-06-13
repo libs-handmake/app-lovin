@@ -19,6 +19,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
 
     companion object {
         var lastTimeShowAds = 0L
+        var disableToShow = false
         var isAdShowing = false
     }
 
@@ -34,7 +35,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
-    private val readyForShow get() = System.currentTimeMillis() - lastTimeShowAds > adsShared.appOpenGap && adsShared.availableForShowFullscreenADS && !GlobalAdState.showingFullScreenADS
+    private val readyForShow get() = System.currentTimeMillis() - lastTimeShowAds > adsShared.appOpenGap && adsShared.availableForShowFullscreenADS && !GlobalAdState.showingFullScreenADS && !disableToShow
 
     private fun loadAd() {
         logError("app open for max: load AD $loading ${openAd?.isReady}")
@@ -50,6 +51,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         if (event == Lifecycle.Event.ON_RESUME) {
+            disableToShow = false
             showAds()
         }
     }

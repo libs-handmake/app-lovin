@@ -54,13 +54,13 @@ class AdsShared_Impl(private val context: Context) : MaxAdsLibShared {
         }
 
     override var appOpenGap: Long
-        get() = 0L//shared.getLong(APP_OPEN_GAP, 15_000L)
+        get() = shared.getLong(APP_OPEN_GAP, 15_000L)
         set(value) {
             edit.putLong(APP_OPEN_GAP, value).apply()
         }
 
     override var fullScreenAdsGap: Long
-        get() = 0L//shared.getLong(FULL_SCREEN_GAP, 5000)
+        get() = shared.getLong(FULL_SCREEN_GAP, 5000)
         set(value) {
             edit.putLong(FULL_SCREEN_GAP, value).apply()
         }
