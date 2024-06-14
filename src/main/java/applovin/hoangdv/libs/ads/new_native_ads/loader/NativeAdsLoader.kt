@@ -16,10 +16,6 @@ class NativeAdsLoader @Inject constructor(
     private val adShared: MaxAdsLibShared
 ) {
 
-    companion object {
-        private const val NATIVE_THRESHOLD = 1
-    }
-
     private val nativeAdHolder by lazy { NativeAdHolder() }
 
     private val nativeAdQueue by lazy { mutableListOf<NativeAdQueue>() }
@@ -43,7 +39,7 @@ class NativeAdsLoader @Inject constructor(
     }
 
     private fun loadNativeAdIfNeeded() {
-        val needToLoad = NATIVE_THRESHOLD - nativeAdHolder.availableNativeAd
+        val needToLoad = adShared.numberNativeAdsNeedToLoad - nativeAdHolder.availableNativeAd
         if (needToLoad > loadingAds) {
             loadingAds++
             NativeAdKeeper(context, adIds.nativeId, {

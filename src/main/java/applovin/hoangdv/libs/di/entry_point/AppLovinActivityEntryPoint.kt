@@ -10,8 +10,6 @@ import dagger.hilt.android.components.ActivityComponent
 @EntryPoint
 @InstallIn(ActivityComponent::class)
 interface AppLovinActivityEntryPoint {
-    fun maxInterstitialManager(): MaxInterstitialManager
-
     @ActivityBannerAd
     fun maxBannerLoader(): MaxBannerLoader
 }

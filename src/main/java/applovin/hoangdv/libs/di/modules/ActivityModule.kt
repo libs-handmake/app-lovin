@@ -18,11 +18,6 @@ import dagger.hilt.android.scopes.ActivityScoped
 @Module
 class ActivityModule {
 
-    @Provides
-    @ActivityScoped
-    fun provideInterstitialAds(activity: Activity, adsShared: MaxAdsLibShared) =
-        MaxInterstitialManager(activity, adsShared)
-
     @ActivityBannerAd
     @Provides
     fun provideBannerAd(@ActivityContext context: Context, activity: Activity) =

@@ -78,7 +78,7 @@ class AdsShared_Impl(private val context: Context) : MaxAdsLibShared {
         }
 
     override var numberNativeAdsNeedToLoad: Long
-        get() = max(shared.getLong(NUMBER_NATIVE_NEED_TO_LOAD, 5), 1)
+        get() = shared.getLong(NUMBER_NATIVE_NEED_TO_LOAD, 1)
         set(value) {
             edit.putLong(NUMBER_NATIVE_NEED_TO_LOAD, value).apply()
         }

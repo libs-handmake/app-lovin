@@ -1,14 +1,16 @@
 package applovin.hoangdv.libs.ads.interstitial
 
 import android.app.Activity
+import android.content.Context
 import applovin.hoangdv.libs.MaxAds
 import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 import applovin.hoangdv.libs.listeners.FullScreenAdsListener
 import applovin.hoangdv.libs.water_flow.WaterFlow
 import common.hoangdz.lib.utils.ads.GlobalAdState
 
-class MaxInterstitialManager(private val activity: Activity, private val adsShared: MaxAdsLibShared) :
-    FullScreenAdsListener() {
+class MaxInterstitialManager(
+    private val context: Context, private val adsShared: MaxAdsLibShared
+) : FullScreenAdsListener() {
 
     companion object {
         var lastTimeShowAds = 0L
@@ -31,20 +33,19 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
         }
     }
 
-    private val isValidAds get() =
-        System.currentTimeMillis() - lastTimeShowAds > adsShared.interstitialGap && MaxAds.readyToLoadAds
+    private val isValidAds get() = System.currentTimeMillis() - lastTimeShowAds > adsShared.interstitialGap && MaxAds.readyToLoadAds
 
     val ready get() = interAd?.isReady == true && adsShared.availableForShowFullscreenADS && !GlobalAdState.showingFullScreenADS
 
 
-    fun show(onAdPassed: ((Boolean) -> Unit)) {
+    fun show(activity: Activity, onAdPassed: ((Boolean) -> Unit)) {
         this.onAdPassed = onAdPassed
         if (waterFlow?.canShowAds != true || !isValidAds) {
             onAdPassed.invoke(false)
             return
         }
         if (ready) {
-            interAd?.show()
+            interAd?.show(activity)
         } else {
             onAdPassed.invoke(false)
             loadAds()
@@ -75,10 +76,9 @@ class MaxInterstitialManager(private val activity: Activity, private val adsShar
     fun loadAds() {
         if (loading || interAd != null) return
         loading = true
-        interAd =
-            MaxInterstitial(activity, waterFlow?.currentId ?: return, this).also {
-                it.loadAd()
-            }
+        interAd = MaxInterstitial(context, waterFlow?.currentId ?: return, this).also {
+            it.loadAd()
+        }
     }
 
     override fun onAdLoaded() {
