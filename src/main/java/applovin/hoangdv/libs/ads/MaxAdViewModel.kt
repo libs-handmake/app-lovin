@@ -49,6 +49,15 @@ class MaxAdViewModel @Inject constructor(
             nativeAdMapper.clear()
         }
     }
+
+    fun registerReloadNative(id: String) {
+        synchronized(nativeAdMapper) {
+            nativeAdMapper[id]?.let {
+                it.value.value?.destroy()
+            }
+            nativeAdMapper.remove(id)
+        }
+    }
 }
 
 val LocalMaxAdViewModel = compositionLocalOf<MaxAdViewModel?> { null }
