@@ -50,12 +50,13 @@ class MaxAdViewModel @Inject constructor(
         }
     }
 
-    fun registerReloadNative(id: String) {
+    fun registerReloadNative() {
         synchronized(nativeAdMapper) {
-            nativeAdMapper[id]?.let {
-                it.value.value?.destroy()
+            for (entry in nativeAdMapper) {
+                entry.value.value?.value?.destroy()
+                entry.value.value = DataResult(DataResult.DataState.IDLE)
             }
-            nativeAdMapper.remove(id)
+//            nativeAdMapper.remove(idReload)
         }
     }
 }
