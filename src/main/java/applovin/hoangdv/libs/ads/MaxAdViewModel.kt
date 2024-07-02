@@ -2,11 +2,9 @@ package applovin.hoangdv.libs.ads
 
 import android.app.Application
 import androidx.compose.runtime.compositionLocalOf
-import androidx.lifecycle.viewModelScope
 import applovin.hoangdv.libs.ads.new_native_ads.loader.NativeAdKeeper
 import applovin.hoangdv.libs.ads.new_native_ads.loader.NativeAdQueue
 import applovin.hoangdv.libs.ads.new_native_ads.loader.NativeAdsLoader
-import common.hoangdz.lib.extensions.launchIO
 import common.hoangdz.lib.utils.user.PremiumHolder
 import common.hoangdz.lib.viewmodels.AppViewModel
 import common.hoangdz.lib.viewmodels.DataResult
@@ -28,15 +26,15 @@ class MaxAdViewModel @Inject constructor(
 
     fun loadNativeAds(requestId: String): MutableStateFlow<DataResult<NativeAdKeeper>> {
         val nativeLoaderState = synchronized(nativeAdMapper) {
-            nativeAdMapper[requestId] ?: MutableStateFlow(
+            val state = nativeAdMapper[requestId] ?: MutableStateFlow(
                 DataResult<NativeAdKeeper>(
                     DataResult.DataState.IDLE
                 )
             ).also { nativeAdMapper[requestId] = it }
+            nativeAdsLoader.enqueueNativeAds(NativeAdQueue(requestId, state))
+            state
         }
-        viewModelScope.launchIO {
-            nativeAdsLoader.enqueueNativeAds(NativeAdQueue(requestId, nativeLoaderState))
-        }
+        nativeAdsLoader.enqueueNativeAds(NativeAdQueue(requestId, nativeLoaderState))
         return nativeLoaderState
     }
 
@@ -53,7 +51,7 @@ class MaxAdViewModel @Inject constructor(
     fun registerReloadNative() {
         synchronized(nativeAdMapper) {
             for (entry in nativeAdMapper) {
-                entry.value.value?.value?.destroy()
+                entry.value.value.value?.destroy()
                 entry.value.value = DataResult(DataResult.DataState.IDLE)
             }
 //            nativeAdMapper.remove(idReload)
