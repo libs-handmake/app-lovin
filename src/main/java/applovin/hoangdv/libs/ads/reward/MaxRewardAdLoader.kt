@@ -1,6 +1,7 @@
 package applovin.hoangdv.libs.ads.reward
 
 import android.app.Activity
+import android.os.CountDownTimer
 import applovin.hoangdv.libs.MaxAds
 import applovin.hoangdv.libs.listeners.FullScreenAdsListener
 import applovin.hoangdv.libs.utils.MaxAdState
@@ -28,6 +29,8 @@ class MaxRewardAdLoader @Inject constructor() : MaxRewardedAdListener {
 
     private var activityRef: WeakReference<Activity>? = null
 
+    private var timer: CountDownTimer? = null
+
     fun show(
         activity: Activity,
         fullScreenAdsListener: FullScreenAdsListener?,
@@ -49,12 +52,27 @@ class MaxRewardAdLoader @Inject constructor() : MaxRewardedAdListener {
 
     private fun loadAd(activity: Activity) {
         if (loading || rewardAd?.isReady == true) return
-        rewardAd = MaxRewardedAd.getInstance(MaxAds.adUnitId?.rewardId ?: return, activity)?.apply {
-            setRevenueListener {
-                MaxAdState.onAdPaidEvent?.invoke(it)
+        timer?.cancel()
+        timer = object : CountDownTimer(
+            GlobalAdState.REWARD_LOADER_TIMEOUT, GlobalAdState.REWARD_LOADER_TIMEOUT
+        ) {
+            override fun onTick(millisUntilFinished: Long) {
+
             }
-            setListener(this@MaxRewardAdLoader)
-        }
+
+            override fun onFinish() {
+                fullScreenAdsListener?.onAdFailedToLoad()
+                quit()
+            }
+
+        }.start()
+
+        rewardAd = MaxRewardedAd.getInstance(MaxAds.adUnitId?.rewardId ?: return, activity)?.apply {
+                setRevenueListener {
+                    MaxAdState.onAdPaidEvent?.invoke(it)
+                }
+                setListener(this@MaxRewardAdLoader)
+            }
         loading = true
         rewardAd?.loadAd()
     }
@@ -68,6 +86,7 @@ class MaxRewardAdLoader @Inject constructor() : MaxRewardedAdListener {
         fullScreenAdsListener?.onAdLoaded()
         loading = false
         if (showOnLoaded) startShowAds()
+        timer?.cancel()
     }
 
     override fun onAdDisplayed(p0: MaxAd) {
@@ -85,6 +104,7 @@ class MaxRewardAdLoader @Inject constructor() : MaxRewardedAdListener {
 
     override fun onAdLoadFailed(p0: String, p1: MaxError) {
         fullScreenAdsListener?.onAdFailedToLoad()
+        timer?.cancel()
     }
 
     override fun onAdDisplayFailed(p0: MaxAd, p1: MaxError) {
