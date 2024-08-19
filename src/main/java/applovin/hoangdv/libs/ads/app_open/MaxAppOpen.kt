@@ -13,9 +13,13 @@ import com.applovin.mediation.MaxError
 import com.applovin.mediation.ads.MaxAppOpenAd
 import common.hoangdz.lib.extensions.logError
 import common.hoangdz.lib.utils.ads.GlobalAdState
+import common.hoangdz.lib.utils.user.PremiumHolder
 
-class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibShared) :
-    LifecycleEventObserver, MaxAdListener {
+class MaxAppOpen(
+    private val context: Context,
+    private val adsShared: MaxAdsLibShared,
+    private val premiumHolder: PremiumHolder
+) : LifecycleEventObserver, MaxAdListener {
 
     companion object {
         var lastTimeShowAds = 0L
@@ -65,7 +69,7 @@ class MaxAppOpen(private val context: Context, private val adsShared: MaxAdsLibS
     }
 
     private fun showAds() {
-        if (isAdShowing || !readyForShow) return
+        if (premiumHolder.isPremium || isAdShowing || !readyForShow) return
         if (openAd?.isReady == true) {
             openAd?.showAd()
         } else loadAd()

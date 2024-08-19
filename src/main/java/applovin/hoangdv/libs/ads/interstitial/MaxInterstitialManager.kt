@@ -7,9 +7,12 @@ import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
 import applovin.hoangdv.libs.listeners.FullScreenAdsListener
 import applovin.hoangdv.libs.water_flow.WaterFlow
 import common.hoangdz.lib.utils.ads.GlobalAdState
+import common.hoangdz.lib.utils.user.PremiumHolder
 
 class MaxInterstitialManager(
-    private val context: Context, private val adsShared: MaxAdsLibShared
+    private val context: Context,
+    private val adsShared: MaxAdsLibShared,
+    private val premiumHolder: PremiumHolder
 ) : FullScreenAdsListener() {
 
     companion object {
@@ -40,7 +43,7 @@ class MaxInterstitialManager(
 
     fun show(activity: Activity, onAdPassed: ((Boolean) -> Unit)) {
         this.onAdPassed = onAdPassed
-        if (waterFlow?.canShowAds != true || !isValidAds) {
+        if (premiumHolder.isPremium && waterFlow?.canShowAds != true || !isValidAds) {
             onAdPassed.invoke(false)
             return
         }

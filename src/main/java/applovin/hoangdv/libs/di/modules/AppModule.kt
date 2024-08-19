@@ -8,6 +8,7 @@ import applovin.hoangdv.libs.ads.nativeAds.MaxNativeManager
 import applovin.hoangdv.libs.data.remote.AdsRemoteConfigs
 import applovin.hoangdv.libs.data.shared.AdsShared_Impl
 import applovin.hoangdv.libs.data.shared.MaxAdsLibShared
+import common.hoangdz.lib.utils.user.PremiumHolder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,8 +32,11 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAppOpen(@ApplicationContext context: Context, adsShared: MaxAdsLibShared) =
-        MaxAppOpen(context, adsShared)
+    fun provideAppOpen(
+        @ApplicationContext context: Context,
+        adsShared: MaxAdsLibShared,
+        premiumHolder: PremiumHolder
+    ) = MaxAppOpen(context, adsShared, premiumHolder)
 
     @Singleton
     @Provides
@@ -45,7 +49,10 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideMaxInterManager(@ApplicationContext context: Context, adsShared: MaxAdsLibShared) =
-        MaxInterstitialManager(context, adsShared)
+    fun provideMaxInterManager(
+        @ApplicationContext context: Context,
+        adsShared: MaxAdsLibShared,
+        premiumHolder: PremiumHolder
+    ) = MaxInterstitialManager(context, adsShared, premiumHolder)
 
 }
