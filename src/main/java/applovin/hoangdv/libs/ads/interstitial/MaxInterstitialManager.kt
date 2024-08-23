@@ -43,7 +43,7 @@ class MaxInterstitialManager(
 
     fun show(activity: Activity, onAdPassed: ((Boolean) -> Unit)) {
         this.onAdPassed = onAdPassed
-        if (premiumHolder.isPremium && waterFlow?.canShowAds != true || !isValidAds) {
+        if (premiumHolder.isPremium || waterFlow?.canShowAds != true || !isValidAds) {
             onAdPassed.invoke(false)
             return
         }
