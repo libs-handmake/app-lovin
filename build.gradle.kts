@@ -8,6 +8,9 @@ plugins {
 
 android {
     namespace = "applovin.hoangdv.libs"
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
