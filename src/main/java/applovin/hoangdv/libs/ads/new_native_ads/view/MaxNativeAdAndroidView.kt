@@ -33,7 +33,7 @@ class MaxNativeAdAndroidView : FrameLayout {
 
     private var iconBindingView: ImageView? = null
 
-    private var callToActionBindingView: Button? = null
+    private var callToActionBindingView: TextView? = null
 
     private var adLabelView: TextView? = null
 
